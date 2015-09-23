@@ -9,7 +9,7 @@ WEBMIN_DATA_DIR=${DATA_DIR}/webmin
 
 create_bind_data_dir() {
   mkdir -p ${BIND_DATA_DIR}
-  chmod -R 0755 ${BIND_DATA_DIR}
+  chmod -R 0775 ${BIND_DATA_DIR}
   chown -R root:${BIND_USER} ${BIND_DATA_DIR}
 
   # populate default bind configuration if it does not exist
