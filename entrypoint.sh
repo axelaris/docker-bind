@@ -12,12 +12,19 @@ create_bind_data_dir() {
 #  chmod -R 0775 ${BIND_DATA_DIR}
   chown -R root:${BIND_USER} ${BIND_DATA_DIR}
 
-  # populate default bind configuration if it does not exist
-  if [ ! -d ${BIND_DATA_DIR}/etc ]; then
-    mv /etc/bind ${BIND_DATA_DIR}/etc
+  # First run
+  if [ ! -L /etc/bind ]; then
+    cd /etc/bind
+    for i in `ls -1`; do
+      if [ -f ${BIND_DATA_DIR}/etc/$i ]; then
+        rm $i
+      else
+        mv $i ${BIND_DATA_DIR}/etc
+      fi
+    done
+    rm -rf /etc/bind
+    ln -sf ${BIND_DATA_DIR}/etc /etc/bind
   fi
-  rm -rf /etc/bind
-  ln -sf ${BIND_DATA_DIR}/etc /etc/bind
 
   if [ ! -d ${BIND_DATA_DIR}/lib ]; then
     mkdir -p ${BIND_DATA_DIR}/lib
